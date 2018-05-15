@@ -116,6 +116,7 @@ class cachestore_redis extends cache_store implements cache_is_key_aware, cache_
      * @param array $configuration
      */
     public function __construct($name, array $configuration = array()) {
+        global $CFG;
         $this->name = $name;
 
         // During unit test purge, it goes off process and no config is passed.
@@ -126,7 +127,7 @@ class cachestore_redis extends cache_store implements cache_is_key_aware, cache_
         } else if (!array_key_exists('server', $configuration) || empty($configuration['server'])) {
             return;
         }
-        $prefix = !empty($configuration['prefix']) ? $configuration['prefix'] : '';
+        $prefix = md5($CFG->wwwroot);// !empty($configuration['prefix']) ? $configuration['prefix'] : '';
         $this->redis = $this->new_redis($configuration['server'], $prefix);
     }
 
